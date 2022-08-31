@@ -6,6 +6,30 @@ import (
 	"net/http"
 )
 
+type Actor struct {
+	Id           uint32 `json:"id"`
+	Login        string `json:"login"`
+	DisplayLogin string `json:"octocat"`
+	GravatrId    string `json:"gravatar_id"`
+	Url          string `json:"url"`
+	AvatarUrl    string `json:"avatar_url"`
+}
+
+type Repo struct {
+	Id   uint32 `json:"id"`
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+type Payload struct {
+	PushId       uint32 `json:"push_id"`
+	Size         string `json:"size"`
+	DistinctSize string `json:"distinct_size"`
+	Ref          string `json:"ref"`
+	Head         string `json:"string"`
+	Before       string `json:"before"`
+}
+
 func main() {
 	// githubからイベントデータを取得
 	// httpリクエストを送る
