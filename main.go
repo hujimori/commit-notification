@@ -6,6 +6,10 @@ import (
 	"net/http"
 )
 
+type Event struct {
+	Id uint32 `json:"id"`
+}
+
 type Actor struct {
 	Id           uint32 `json:"id"`
 	Login        string `json:"login"`
@@ -22,12 +26,26 @@ type Repo struct {
 }
 
 type Payload struct {
-	PushId       uint32 `json:"push_id"`
-	Size         string `json:"size"`
-	DistinctSize string `json:"distinct_size"`
-	Ref          string `json:"ref"`
-	Head         string `json:"string"`
-	Before       string `json:"before"`
+	PushId       uint32    `json:"push_id"`
+	Size         string    `json:"size"`
+	DistinctSize string    `json:"distinct_size"`
+	Ref          string    `json:"ref"`
+	Head         string    `json:"string"`
+	Before       string    `json:"before"`
+	Commits      []*Commit `json:"commits"`
+}
+
+type Commit struct {
+	Sha      string `json:"sha"`
+	Author   Author `json:"author"`
+	Message  string `json:"message"`
+	Distinct string `json:"distinct"`
+	Url      string `json:"url"`
+}
+
+type Author struct {
+	Email string `json:"email"`
+	Name  string `json:"name"`
 }
 
 func main() {
