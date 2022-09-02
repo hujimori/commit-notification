@@ -1,13 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 type Event struct {
-	Id uint32 `json:"id"`
+	Id         string  `json:"id"`
+	Type       string  `json:"string"`
+	Actor      Actor   `json:"actor"`
+	Repo       Repo    `json:"repo"`
+	Payload    Payload `json:"payload"`
+	Public     bool    `json:"bool"`
+	Created_at string  `json:"created_at"`
 }
 
 type Actor struct {
@@ -26,9 +33,9 @@ type Repo struct {
 }
 
 type Payload struct {
-	PushId       uint32    `json:"push_id"`
-	Size         string    `json:"size"`
-	DistinctSize string    `json:"distinct_size"`
+	PushId       uint64    `json:"push_id"`
+	Size         uint64    `json:"size"`
+	DistinctSize uint64    `json:"distinct_size"`
 	Ref          string    `json:"ref"`
 	Head         string    `json:"string"`
 	Before       string    `json:"before"`
@@ -39,7 +46,7 @@ type Commit struct {
 	Sha      string `json:"sha"`
 	Author   Author `json:"author"`
 	Message  string `json:"message"`
-	Distinct string `json:"distinct"`
+	Distinct bool   `json:"distinct"`
 	Url      string `json:"url"`
 }
 
@@ -63,7 +70,22 @@ func main() {
 		return
 	}
 
-	fmt.Print(string(bodyBytes))
+	// fmt.Print(string(bodyBytes))
+
+	events := make([]*Event, 0)
+	err = json.Unmarshal(bodyBytes, &events)
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	fmt.Print(len(events))
+	for _, event := range events {
+		fmt.Printf("%s\n", event.Id)
+
+		for _, c := range event.Payload.Commits {
+			fmt.Printf("%s\n", c.Sha)
+		}
+	}
 
 	// 取得したデータを構造体につめかえる
 	// 日付単位で集計
