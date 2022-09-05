@@ -70,8 +70,6 @@ func main() {
 		return
 	}
 
-	// fmt.Print(string(bodyBytes))
-
 	events := make([]*Event, 0)
 	err = json.Unmarshal(bodyBytes, &events)
 	if err != nil {
