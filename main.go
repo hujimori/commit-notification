@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type Event struct {
@@ -55,6 +56,11 @@ type Author struct {
 	Name  string `json:"name"`
 }
 
+type CommitCount struct {
+	Date  string
+	Count int
+}
+
 func main() {
 	// githubからイベントデータを取得
 	// httpリクエストを送る
@@ -77,15 +83,26 @@ func main() {
 	}
 
 	fmt.Print(len(events))
-	for _, event := range events {
-		fmt.Printf("%s\n", event.Id)
+	// 取得したデータを構造体につめかえる
 
-		for _, c := range event.Payload.Commits {
-			fmt.Printf("%s\n", c.Sha)
+	commitCounts := make([]CommitCount, 0)
+
+	for _, event := range events {
+
+		time := strings.Split(event.Created_at, "T")[0]
+
+		c := CommitCount{
+			Date:  time,
+			Count: len(event.Payload.Commits),
 		}
+		commitCounts = append(commitCounts, c)
+
 	}
 
-	// 取得したデータを構造体につめかえる
+	for _,  := range commitCounts {
+		fmt.Printf("%s のコミット数 %d\n", k, v)
+	}
+
 	// 日付単位で集計
 	// 実行日のコミット数を数える
 }
