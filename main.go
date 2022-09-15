@@ -87,7 +87,7 @@ func main() {
 
 	commitCounts := make([]CommitCount, 0)
 
-	for _, event := range events {
+	for _, ev	ent := range events {
 
 		time := strings.Split(event.Created_at, "T")[0]
 
@@ -105,4 +105,6 @@ func main() {
 
 	// 日付単位で集計
 	// 実行日のコミット数を数える
+
+	// Twitterのapiを使ってツイートするように
 }
